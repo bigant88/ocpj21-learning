@@ -1,0 +1,59 @@
+KINH NGHIỆM THI JAVA OCP 21 (TỔNG HỢP)
+
+1. THÔNG TIN ĐỀ THI
+- Số câu hỏi: 50 câu
+- Thời gian: 120 phút (~2.4 phút/câu)
+- Tỷ lệ đậu: ~68%
+- Hình thức: Multiple Choice / Multiple Select
+- Mỗi câu đều ghi rõ số đáp án cần chọn (Choose ONE / TWO / THREE / ALL)
+
+2. NGUYÊN TẮC CHẤM ĐIỂM
+- Chọn sai số lượng đáp án = sai toàn bộ câu
+- Không có điểm từng phần
+- Mỗi câu rất “đắt”, sai 1 câu ~ mất 2%
+
+3. CHIẾN LƯỢC LÀM BÀI
+- Không dành quá nhiều thời gian cho 1 câu
+- Câu khó: đánh dấu, quay lại sau
+- Đọc kỹ yêu cầu số đáp án trước khi nhìn code
+- Loại đáp án chắc chắn sai trước
+
+4. CÁC CHỦ ĐỀ HAY RA
+- Streams & Lambda (lazy evaluation, terminal operation)
+- Concurrency (thread safety, virtual threads)
+- OOP (override, overload, polymorphism)
+- Exception handling (try-with-resources, suppressed exception)
+- New features Java 21 (records, sealed class, pattern matching)
+- Modules (ít câu nhưng dễ mất điểm)
+
+5. NHỮNG BẪY PHỔ BIẾN
+- Code compile được nhưng runtime error
+- Override sai rule exception / access modifier
+- Stream không chạy vì thiếu terminal
+- Lambda dùng biến không effectively final
+- Nhầm lẫn giữa thread-safe và non-thread-safe
+- XOR, NOT, bitwise operation
+
+6. MẸO VÀNG
+- Đọc từng từ khóa trong đề
+- Gặp stream: xác định terminal operation
+- Gặp concurrency: nghĩ đến race condition / deadlock
+- Không đoán theo cảm giác “code giống đúng”
+
+7. MOCK TEST
+- Nhiều mock test trên mạng không chuẩn (không ghi số đáp án)
+- Đề Oracle chính thức luôn ghi rõ số đáp án cần chọn
+
+8. 🧠 Mẹo vàng cho OCP 21
+- Đề không kiểm tra cú pháp đơn giản
+- Kiểm tra:
+    - hiểu thứ tự thực thi
+    - hiểu ngữ nghĩa
+- Nhiều câu:
+    - compile OK nhưng runtime fail
+    - hoặc compile fail rất kín
+
+KẾT LUẬN
+- OCP 21 không kiểm tra thuộc lòng
+- Kiểm tra khả năng đọc code, hiểu ngữ nghĩa và thứ tự thực thi
+- Học sâu từng chủ đề quan trọng sẽ hiệu quả hơn học dàn trải
