@@ -155,6 +155,7 @@
 - Một method reference có thể map nhiều functional interface
 - Functional interface chỉ có **một abstract method**
 - Object methods không tính vào abstract method count
+- Collectors.toMap throws IllegalStateException if a key already exists 
 
 # 9 Collections
 - `contains()` nhận `Object`, không phải generic type
