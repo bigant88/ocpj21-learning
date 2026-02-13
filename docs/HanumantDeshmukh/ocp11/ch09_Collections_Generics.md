@@ -298,3 +298,15 @@ List<?> unknownList = new ArrayList<String>();
 unknownList.add("Java"); // Lỗi compile-time
 unknownList.add(null);   // OK
 ```
+### Appendix
+| Method                                 | Modifiable? | Size Change Allowed? | Is It a Real Copy? | Reflects Changes to Original? | Notes |
+|----------------------------------------|-------------|-----------------------|---------------------|--------------------------------|-------|
+| Collections.unmodifiableList(list)     | ❌ No       | ❌ No                | ❌ No (view only)   | ✔ Yes                          | Read-only view; changes in original are visible |
+| List.copyOf(list)                      | ❌ No       | ❌ No                | ✔ Yes (snapshot)    | ❌ No                          | True unmodifiable copy (Java 10+) |
+| List.of(...)                           | ❌ No       | ❌ No                | ✔ Snapshot          | ❌ No                          | Does NOT track outside changes |
+| new ArrayList<>(list)                  | ✔ Yes       | ✔ Yes                | ✔ Yes              | ❌ No                          | Fully independent, modifiable |
+| new LinkedList<>(list)                 | ✔ Yes       | ✔ Yes                | ✔ Yes              | ❌ No                          | Fully independent copy |
+| Arrays.asList(array)                   | ✔ Yes (set) | ❌ No (fixed size)    | ❌ No (backed array) | ✔ Yes                         | Updates reflect array changes |
+| new ArrayList<>(Arrays.asList(array))  | ✔ Yes       | ✔ Yes                | ✔ Yes              | ❌ No                          | Independent from original array |
+| Set.copyOf(collection)                 | ❌ No       | ❌ No                | ✔ Yes              | ❌ No                          | Snapshot like List.copyOf |
+| Map.copyOf(map)                        | ❌ No       | ❌ No                | ✔ Yes              | ❌ No                          | Snapshot |
