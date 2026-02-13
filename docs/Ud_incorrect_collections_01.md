@@ -25,6 +25,27 @@ DateTimeFormatter f = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL);
 System.out.println(f.format(date));
 ```
 
+- Câu 44: Không thể chuyển trực tiếp Date → LocalDate; phải qua Instant và ZonedDateTime.
+   ```java
+   Date date = new Date();
+   LocalDate localDate =
+       date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+   Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+   ```
+- Câu 49: LocalDate.ofEpochDay(1) tương ứng 1970-01-02 vì epoch day 0 là 1970-01-01.
+   ```java
+   LocalDate date = LocalDate.ofEpochDay(1);
+   System.out.println(date); // 1970-01-02
+   ```
+- Câu 83: LocalDate immutable; minus()/plus() không thay đổi biến gốc nếu không gán lại -> equals/isEqual đều false.
+   ```java
+   LocalDate d1 = LocalDate.of(2019,1,2);
+   d1.minus(Period.ofDays(1));
+   LocalDate d2 = LocalDate.of(2018,12,31);
+   d2.plus(Period.ofDays(1));
+   System.out.println(d1.equals(d2)+":"+d1.isEqual(d2));
+   ```
+
 # 09 Class Design
 - Câu 45: Phương thức final của Object (getClass/notify/wait) không thể override.
 ```java
@@ -37,14 +58,6 @@ class Player {
 static class PrinterCreator { static Printer printer = new Printer(); }
 static Printer getInstance() { return PrinterCreator.printer; }
 System.out.println(Printer.getCount());
-```
-
-# 10- Abstract Classes & Interfaces
-- Câu 19: Method của lớp cha (concrete) ưu tiên hơn default method từ interface khi trùng chữ ký.
-```java
-interface Printer1 { default void print(){ System.out.println("Printer1"); } }
-class Printer2 { public void print(){ System.out.println("Printer2"); } }
-class Printer extends Printer2 implements Printer1 {}
 ```
 
 # 11 Lambdas & Functional Programming
@@ -72,6 +85,12 @@ java.util.function.Consumer<Integer> consumer = System.out::print;
 Integer i = 5; consumer.andThen(consumer).accept(i++);
 System.out.println();
 ```
+
+- Câu 6: BiFunction<Integer,Integer,Character> yêu cầu trả Character; i+j là int nên lỗi compile.
+   ```java
+   BiFunction<Integer,Integer,Character> f = (i,j) -> i + j; // compile error
+   System.out.println(f.apply(0,65));
+   ```
 
 # 12 Collections
 - Câu 23: Wildcard ? extends chỉ đọc (PECS); gọi set(...) bị cấm ⇒ lỗi biên dịch.
@@ -112,6 +131,63 @@ for(Object o: list){ System.out.print(o); }
 // ...
 ```
 
+- Câu 15: IntStream.range(10,1) trả stream rỗng vì start > end → count = 0.
+   ```java
+   System.out.println(IntStream.range(10,1).count());
+   ```
+- Câu 20: Raw type khiến T=Object; set(...) liên tục ghi đè; giá trị cuối (%) được in.
+   ```java
+   Test obj = new Test();
+   obj.set("OCP");
+   obj.set(85);
+   obj.set('%');
+   System.out.println(obj.get());
+   ```
+- Câu 26: “super” chỉ dùng trong wildcard (? super T) → không dùng trong type parameter.
+   ```java
+   class A<T extends String>{}
+   class B<T super String>{} // compile error
+   ```
+- Câu 30: remove() trên Deque rỗng → NoSuchElementException.
+   ```java
+   Deque<Character> q = new ArrayDeque<>();
+   q.add('A'); q.remove(); q.remove(); // ném NoSuchElementException
+   ```
+- Câu 32: partitioningBy(s→s.equals("OCA")) luôn false vì s là Certification, không phải String.
+   ```java
+   stream.collect(Collectors.partitioningBy(s -> s.equals("OCA")));
+   System.out.println(map.get(true)); // []
+   ```
+- Câu 40: TreeMap với enum key sắp theo thứ tự định nghĩa enum, không theo put().
+   ```java
+   enum TL { RED, YELLOW, GREEN }
+   Map<TL,String> map = new TreeMap<>();
+   ```
+- Câu 41: Stream<T> không có sum(); chỉ IntStream/LongStream/DoubleStream có.
+   ```java
+   Stream<Integer> s = Arrays.asList(1,2,3).stream();
+   s.sum(); // compile error
+   ```
+- Câu 43: compareTo trả o.age - this.age → sắp Employee giảm dần theo tuổi.
+   ```java
+   public int compareTo(Employee o){ return o.age - this.age; }
+   ```
+- Câu 60: Comparator.comparing và compareTo hợp lệ; Integer::max không phải comparator đúng.
+   ```java
+   list.stream().max(Integer::compareTo); // OK
+   list.stream().max(Integer::max); // sai
+   ```
+- Câu 61: Type parameter tên “String” che java.lang.String → toString() lỗi.
+   ```java
+   class Printer<String>{
+       public String toString(){ return null; }
+   }
+   ```
+- Câu 76: TreeSet không cho null → NullPointerException.
+   ```java
+   Set<String> s = new TreeSet<>(Arrays.asList(null,null,null));
+   ```
+
 # 13 Exceptions
 - Câu 53: TWR với AutoCloseable: close() có thể ném checked ⇒ main phải catch/declare.
 ```java
@@ -146,6 +222,37 @@ try(java.util.Scanner scan = new java.util.Scanner(System.in)){
 }
 ```
 
+- Câu 19: Gán lại biến e trong catch làm mất precise rethrow → throw e lỗi compile.
+   ```java
+   catch(Exception e){
+       e = new SQLException();
+       throw e; // compile error
+   }
+   ```
+- Câu 21: switch(null) → NullPointerException trước default.
+   ```java
+   switch(status) { }
+   ```
+- Câu 58: Biến trong TWR không dùng được ở catch → writer.close() lỗi compile.
+   ```java
+   try(PrintWriter w = new PrintWriter(System.out)){}
+   catch(Exception ex){ w.close(); } // lỗi
+   ```
+- Câu 62: Nhiều resource đóng ngược thứ tự → r2 đóng trước r1.
+   ```java
+   try(r1; r2){ System.out.println("Test"); }
+   ```
+- Câu 78: Exception chính là từ m1(); close() vẫn chạy; output: A E C B.
+   ```java
+   r1.m1(); // A + throw new Exception("B")
+   r2.close(); r1.close(); // EC
+   ```
+- Câu 80: FileReader.close() ném IOException; catch chỉ FileNotFoundException → không compile.
+   ```java
+   try(FileReader fr = new FileReader("C:/t.txt")){}
+   catch(FileNotFoundException e){} // thiếu IOException
+   ```
+
 # 15 Beyond Classes
 - Câu 42: enum không thể extends, có thể implements; ngầm extends java.lang.Enum.
 ```java
@@ -159,6 +266,22 @@ class M{ private int num1=100; class N{ private int num2=200; } }
 M outer = new M(); M.N inner = outer.new N();
 System.out.println(outer.num1 + inner.num2);
 ```
+
+- Câu 36: Outer truy cập private của inner; new Y() → this.new Y().
+   ```java
+   Y obj = new Y();
+   obj.m(); // OK
+   ```
+- Câu 73: ++x làm x không còn effectively final → compile error.
+   ```java
+   System.out.println(++x);
+   ```
+- Câu 84: Enum constant list phải đứng đầu file enum.
+   ```java
+   enum TrafficLight {
+       GREEN("go"), AMBER("slow"), RED("stop");
+   }
+   ```
 
 # 16 Streams
 - Câu 20: Optional.ofNullable(null) ⇒ Optional.empty.
@@ -204,6 +327,27 @@ java.nio.file.Files.readAllLines(java.nio.file.Paths.get("F:/Book.java")).stream
 // ...
 ```
 
+- Câu 16: orElseThrow(MyException::new) ném checked exception → phải catch/declare.
+   ```java
+   optional.orElseThrow(MyException::new);
+   ```
+- Câu 27: reduce(res++, ...) dùng giá trị trước tăng → 24.
+   ```java
+   stream.reduce(res++, (i,j)->i*j);
+   ```
+- Câu 32: Predicate sai → bucket true luôn rỗng.
+   ```java
+   s -> s.equals("OCA");
+   ```
+- Câu 41: Stream<T>.sum() không tồn tại; cần mapToInt.
+   ```java
+   stream.mapToInt(Integer::intValue).sum();
+   ```
+- Câu 60: Comparator hợp lệ → comparing, compareTo.
+   ```java
+   list.stream().max(Comparator.comparing(a->a));
+   ```
+
 # 17 Localization
 - Câu 12: ResourceBundle: thứ tự tra cứu → khớp base file khi không có gói phù hợp ⇒ in 'French/Canada'.
 ```java
@@ -217,6 +361,15 @@ java.util.Locale[] loc = java.util.Locale.getAvailableLocales();
 java.util.Arrays.stream(loc).filter(x->x.getLanguage().equals("fr")).forEach(System.out::println);
 // ...
 ```
+
+- Câu 10: Locale cho phép language/country vô nghĩa; in đúng chuỗi nhập.
+   ```java
+   Locale l = new Locale("temp","UNKNOWN");
+   ```
+- Câu 17: setDefault gọi qua instance vẫn hợp lệ (compiler chuyển thành static).
+   ```java
+   loc.setDefault(loc);
+   ```
 
 # 19 Concurrency
 - Câu 2: ExecutorService.submit(Runnable) ⇒ Future.get() trả null; ép sang Integer in null.
@@ -237,6 +390,13 @@ private static java.util.concurrent.atomic.AtomicInteger ai = new java.util.conc
 System.out.print(ai.getAndDecrement());
 // ...
 ```
+
+- Câu 18: shutdown() không đợi task hoàn thành → size có thể 0–1000.
+   ```java
+   s.shutdown();
+   System.out.println(a.getList().size());
+   ```
+- Câu 56: Livelock = trạng thái thay đổi liên tục nhưng không tiến triển.
 
 # 20 IO
 - Câu 11: Khi copy bytes, phải ghi theo số byte đọc được: write(arr,0,res); tránh ghi cả mảng.
@@ -266,4 +426,42 @@ java.nio.file.Files.find(root, 2, pred).forEach(System.out::println);
 java.nio.file.Path path = java.nio.file.Paths.get("F:/A/B/C/Book.java");
 System.out.println(path.subpath(1,4));
 // B\C\Book.java
+```
+
+- Câu 3: path.toFile().isDirectory(), Files.isDirectory(path) hợp lệ; File.isDirectory(Path) không tồn tại.
+   ```java
+   Files.isDirectory(path);
+   ```
+- Câu 37: createDirectory yêu cầu parent tồn tại → NoSuchFileException.
+   ```java
+   Files.createDirectory(Paths.get("F:/X/Y/Z"));
+   ```
+- Câu 38: getParentFile() → File, getParent() → String.
+   ```java
+   dir.getParentFile().getParentFile();
+   ```
+- Câu 39: copy(symbolic link) → copy target file → src là link, tgt là file thường.
+   ```java
+   Files.copy(src, tgt);
+   ```
+- Câu 57: PrintWriter không ném IOException; write() sau close() không ném lỗi.
+   ```java
+   bw.close(); bw.write(1);
+   ```
+- Câu 67: flush() trên stream đã close → IOException.
+   ```java
+   bw.flush();
+   ```
+- Câu 77: Console lấy qua System.console(); readPassword trả char[].
+   ```java
+   Console c = System.console();
+   char[] pwd = c.readPassword("Enter: ");
+   ```
+
+# 10- Abstract Classes & Interfaces
+- Câu 19: Method của lớp cha (concrete) ưu tiên hơn default method từ interface khi trùng chữ ký.
+```java
+interface Printer1 { default void print(){ System.out.println("Printer1"); } }
+class Printer2 { public void print(){ System.out.println("Printer2"); } }
+class Printer extends Printer2 implements Printer1 {}
 ```
