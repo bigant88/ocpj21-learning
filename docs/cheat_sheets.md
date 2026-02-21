@@ -299,3 +299,19 @@
 - Files.delete() và deleteIfExists() đều ném IOException
 - Files.lines() trả Stream, Files.readAllLines() load toàn bộ memory
 - Files.walk() duyệt đệ quy, list() chỉ duyệt một cấp
+
+# Records 
+- Record = immutable data carrier
+- Implicit final class
+- Fields luôn private final
+- Không có setter
+- Không được extends class khác
+- Nested record luôn static
+- Không được khai báo instance field / instance initializer
+- Canonical constructor được auto-generate
+- Compact constructor không tự assign field (compiler assign sau block)
+- Non-canonical constructor phải gọi canonical constructor
+- Canonical constructor không được có throws
+- Không dùng tên component trùng method của Object
+
+# 
