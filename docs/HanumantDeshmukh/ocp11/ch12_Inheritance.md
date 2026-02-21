@@ -294,4 +294,82 @@ System.out.println(n == s); // This prints false
 | Polymorphism  | Compile-time       | Runtime              | No polymorphism          |
 | Signature     | Different params   | Same params          | Same name                |
 
-
+# 12.7 Valid Override với Generics
+## 12.7.1 Các bước kiểm tra một override hợp lệ
+- 1. Kiểm tra method signature
+- 2. Kiểm tra generic type của parameter:
+    - Overriding method được phép xóa generic type
+    - Nhưng không được thêm generic nếu method gốc không có
+## 12.7.2 Type Erasure
+- Generic không tồn tại ở runtime
+- Hệ quả: Trong cùng một class
+```java
+void m(Set<String> s)
+void m(Set<Integer> s)   // ❌ Compile error
+```
+- ⚠ Trường hợp superclass + subclass
+```java 
+//Superclass:
+void m(Set<String> s)
+//Subclass:
+void m(Set<Integer> s)
+```
+- Compile có thể coi là overload -> Nhưng JVM thấy trùng sau erasure → conflict → Java không cho phép.
+## 12.7.3 Rule of Covariant Returns
+- Java cho phép return type của overriding method là subtype.
+```java
+List getList()
+ArrayList getList()   // OK
+Object getList()      // ❌
+``` 
+## 12.7.4 Covariant Return với Generics
+- dễ sai nhất
+### CÂY 1 — ? extends (Đi XUỐNG)
+- 📌 Quy tắc nhớ: ? extends → càng cụ thể càng là subtype
+```java
+List<Integer>
+        ⬇
+List<? extends Integer>
+        ⬇
+List<? extends Number>
+```
+- Dòng trên là subtype của dòng dưới
+- Mũi tên đi xuống = mở rộng phạm vi
+- Ví dụ override
+```java
+List<? extends Number> m() //super class
+// subclass
+List<Integer>              ✅
+List<? extends Integer>    ✅
+List<? extends Number>     ✅
+List<Number>               ❌
+```
+### 🌳 CÂY 2 — ? super (Đi LÊN)
+- Quy tắc nhớ: ? super → càng tổng quát càng là subtype
+```java
+List<Number>
+        ⬇
+List<? super Number>
+        ⬇
+List<? super Integer>
+```
+- Với super, cây đảo ngược logic so với extends
+- Đi xuống nhưng nghĩa là đi lên trong hierarchy
+- Ví dụ override
+```java
+// Superclass:
+List<? super Number> m()
+// Subclass có thể trả về:
+List<Number>           ✅
+List<Integer>          ❌
+List<? super Integer>  ❌
+```
+### 🚨 CÂU BẪY QUAN TRỌNG NHẤT
+```java
+List<Integer>  ❌  List<Number> // Generics không kế thừa trực tiếp
+```
+### 🧠 Câu thần chú nhớ nhanh
+- extends → càng cụ thể càng subtype
+- super → càng tổng quát càng subtype
+- Generic không tự kế thừa
+- Luôn check theo cây
