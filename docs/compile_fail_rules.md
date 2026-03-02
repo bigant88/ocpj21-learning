@@ -115,6 +115,7 @@
 * Abstract class không new được
 * Cannot instantiate interface
 * Final class không extend
+* Not possible to cast super keyword in java, it causes compilation error.
 
 ---
 
