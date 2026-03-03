@@ -40,10 +40,6 @@ KINH NGHIỆM THI JAVA OCP 21 (TỔNG HỢP)
 - Gặp concurrency: nghĩ đến race condition / deadlock
 - Không đoán theo cảm giác “code giống đúng”
 
-7. MOCK TEST
-- Nhiều mock test trên mạng không chuẩn (không ghi số đáp án)
-- Đề Oracle chính thức luôn ghi rõ số đáp án cần chọn
-
 8. 🧠 Mẹo vàng cho OCP 21
 - Đề không kiểm tra cú pháp đơn giản
 - Kiểm tra:
@@ -53,7 +49,17 @@ KINH NGHIỆM THI JAVA OCP 21 (TỔNG HỢP)
     - compile OK nhưng runtime fail
     - hoặc compile fail rất kín
 
-KẾT LUẬN
-- OCP 21 không kiểm tra thuộc lòng
-- Kiểm tra khả năng đọc code, hiểu ngữ nghĩa và thứ tự thực thi
-- Học sâu từng chủ đề quan trọng sẽ hiệu quả hơn học dàn trải
+9. Kỹ thuật loại đáp án
+Thường có:
+- 1 đáp án sai rõ ràng
+- 1 đáp án bẫy logic
+- 1 đáp án gần đúng
+- 1 đáp án đúng hoàn toàn
+- Loại dần → còn 2 đáp án → phân tích rule.
+
+10. 5 câu hỏi bạn nên tự hỏi khi phân tích
+  - Cái này compile không?
+ -  Có polymorphism không?
+ -  Có immutability không?
+ -  Có default value nào chưa init?
+  - Có static vs instance bị lẫn không?
