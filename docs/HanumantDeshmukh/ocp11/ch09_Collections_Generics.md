@@ -185,36 +185,81 @@ students.sort(Comparator.comparing(Student::getName);
 - pollFirstEntry(), pollLastEntry()
 - reversed()
 # 8 Tổng quan các loại Collection và khi nào dùng loại nào
-### List
-- Khi cần thứ tự và cho phép phần tử trùng lặp.
-- Triển khai:
-- ArrayList (truy cập nhanh)
-- LinkedList (chèn/xóa nhanh)
-### Set
-- Khi cần giá trị duy nhất, không quan tâm thứ tự.
-- Ví dụ: tập hợp ID, danh sách không trùng lặp.
-- Triển khai:
-- HashSet (nhanh)
-- LinkedHashSet (giữ thứ tự chèn)
-- TreeSet (sắp xếp)
-### Queue
-- Khi cần xử lý theo thứ tự đến trước (FIFO).
-- Ví dụ: hàng đợi tác vụ, xử lý yêu cầu.
-- Triển khai:
-- ArrayDeque
-- LinkedList
-### Deque
-- Khi cần linh hoạt (thêm/xóa ở cả hai đầu), hoặc dùng như Stack.
-- Ví dụ: undo/redo, xử lý dữ liệu hai đầu.
-- Triển khai:
-- ArrayDeque
-### Map
-- Khi cần ánh xạ key → value.
-- Ví dụ: danh sách cấu hình, bảng tra cứu.
-- Triển khai:
-- HashMap (nhanh)
-- LinkedHashMap (giữ thứ tự chèn)
-- TreeMap (sắp xếp theo key)
+- List     → ordered, duplicates allowed
+- Set      → no duplicates
+- Map      → key unique
+- Hash*    → hash table → unordered
+- Linked*  → insertion order
+- Tree*    → sorted
+- HashSet uses: hashCode() + equals()
+- TreeSet / TreeMap require: Comparable OR Comparator
+- PriorityQueue: sorted but iteration order unpredictable
+```java
+ArrayList   → fast read
+LinkedList  → fast insert
+HashSet     → unique
+TreeSet     → sorted
+HashMap     → key-value
+TreeMap     → sorted map
+```
+JAVA COLLECTIONS
+
+1️⃣ Iterable
+   └── Collection
+
+        ├── List (ordered, duplicates allowed)
+        │
+        │   ├── ArrayList
+        │   │      • dynamic array
+        │   │      • fast random access
+        │   │      • slow insert middle
+        │   │
+        │   ├── LinkedList
+        │   │      • doubly linked list
+        │   │      • fast insert/delete
+        │   │      • slow access
+        │   │
+        │   └── Vector (legacy)
+
+        ├── Set (no duplicates)
+        │
+        │   ├── HashSet
+        │   │      • unordered
+        │   │      • uses hashCode + equals
+        │   │
+        │   ├── LinkedHashSet
+        │   │      • insertion order
+        │   │
+        │   └── TreeSet
+        │          • sorted
+        │          • Comparable / Comparator
+        │          • no null
+
+        └── Queue
+             │
+             ├── PriorityQueue
+             │      • sorted by priority
+             │
+             └── Deque
+                    └── ArrayDeque
+                           • stack + queue
+                           • very fast
+
+
+2️⃣ Map (NOT part of Collection)
+
+        ├── HashMap
+        │      • key unique
+        │      • 1 null key
+        │
+        ├── LinkedHashMap
+        │      • insertion order
+        │
+        ├── TreeMap
+        │      • sorted by key
+        │      • no null key
+        │
+        └── Hashtable (legacy)
 
 #  9: Generics và Wildcards
 - cực kỳ quan trọng cho kỳ thi OCP và cũng rất hữu ích trong thực tế vì nó giúp viết mã an toàn kiểu (type-safe) và tái sử dụng.
