@@ -204,7 +204,7 @@ TreeMap     → sorted map
 ```
 JAVA COLLECTIONS
 
-1️⃣ Iterable
+ Iterable
    └── Collection
 
         ├── List (ordered, duplicates allowed)
@@ -246,7 +246,7 @@ JAVA COLLECTIONS
                            • very fast
 
 
-2️⃣ Map (NOT part of Collection)
+ Map (NOT part of Collection)
 
         ├── HashMap
         │      • key unique
