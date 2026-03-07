@@ -261,6 +261,35 @@ JAVA COLLECTIONS
         │
         └── Hashtable (legacy)
 
+# 8.1 Null value contain - Quick Memory Trick (OCP)
+## 1️⃣ List
+All **List implementations allow null**
+- ArrayList → null allowed
+- LinkedList → null allowed
+- Vector → null allowed
+---
+## 2️⃣ Hash-based collections
+Allow **one null element**
+- HashSet → one null
+- LinkedHashSet → one null
+---
+## 3️⃣ Tree-based collections
+No **null allowed**
+- TreeSet → ❌ null not allowed
+- TreeMap → ❌ null key not allowed (value can be null)
+Reason: Tree structures require **comparison**, and `null` cannot be compared.
+---
+## 4️⃣ Queue / Deque
+No **null allowed**
+- PriorityQueue → ❌ null not allowed
+- ArrayDeque → ❌ null not allowed
+Reason: `null` is used as a **special return value** in queue operations.
+Example:
+
+```java
+Queue<Integer> q = new LinkedList<>();
+q.poll();  // returns null if queue is empty
+```
 #  9: Generics và Wildcards
 - cực kỳ quan trọng cho kỳ thi OCP và cũng rất hữu ích trong thực tế vì nó giúp viết mã an toàn kiểu (type-safe) và tái sử dụng.
 
