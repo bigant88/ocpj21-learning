@@ -57,7 +57,7 @@ Nếu có các class sau:
 - Optional
 - Stream
 - Record
-
+- Biến khởi tạo trong TWR 
 Hỏi:
 - Có gán lại kết quả không?
 - Có gọi terminal operation với Stream không?

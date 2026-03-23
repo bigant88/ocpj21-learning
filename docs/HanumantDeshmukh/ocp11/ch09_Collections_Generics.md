@@ -335,6 +335,14 @@ List<? extends Number> list1; // Chấp nhận List<Integer>, List<Double>
 - Quy tắc PECS (Producer Extends, Consumer Super)
 - Producer Extends: Nếu bạn đọc dữ liệu → dùng ? extends.
 - Consumer Super: Nếu bạn ghi dữ liệu → dùng ? super.
+
+| Type          | Read | Write |
+| ------------- | ---- | ----- |
+| `? extends T` | OK   | ❌     |
+| `? super T`   | ❌    | OK    |
+| `T`           | OK   | OK    |
+
+
 ### Diamond Operator (<>)
 - Giúp trình biên dịch suy luận kiểu dữ liệu khi khởi tạo đối tượng Generic, tránh việc phải lặp lại kiểu ở cả hai bên
 - Không thể dùng khi khai báo kiểu không rõ ràng (ví dụ với anonymous class)
