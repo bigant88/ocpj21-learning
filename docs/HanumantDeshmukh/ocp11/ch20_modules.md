@@ -120,6 +120,14 @@ module zoo.visitor {
 ```
 ## 6️⃣ Các loại Module
 ### 🔹 Named Module
+## 7 Bảng tổng hợp lệnh jimage 
+| Command | Mục đích                 |
+| ------- | ------------------------ |
+| list    | Liệt kê file trong image |
+| info    | Thông tin image          |
+| extract | Giải nén image           |
+| verify  | Kiểm tra image           |
+| help    | Trợ giúp                 |
 
 
 
