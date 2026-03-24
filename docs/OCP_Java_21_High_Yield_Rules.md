@@ -142,21 +142,23 @@ Consumer → ? super
 ---
 
 ## 12. Modules
-module-info keywords:
+- module-info keywords:
+```shell
 requires
 requires transitive
 exports
 exports ... to
 provides ... with
 uses
-
-Commands:
+```
+- Commands:
+```shell
 javac -p mods -d out
 java -p mods -m module/class
 java --list-modules
 jdeps -s
 jlink --add-modules --output
-
+```
 ---
 
 ## 13. Concurrency
